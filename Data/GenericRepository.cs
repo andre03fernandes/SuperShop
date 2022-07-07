@@ -16,7 +16,8 @@ namespace SuperShop.Data
 
         public IQueryable<T> GetAll()
         {
-            return _context.Set<T>().AsNoTracking(); // AsNoTracking - vai buscar à tabela os dados e desliga a ligação, não ficando preso à tabela (Set<T> - é a tabela correspondente)
+            // AsNoTracking - vai buscar à tabela os dados e desliga a ligação, não ficando preso à tabela (Set<T> - é a tabela correspondente)
+            return _context.Set<T>().AsNoTracking(); 
         }
 
         public async Task<T> GetByIdAsync(int id)
