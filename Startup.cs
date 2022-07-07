@@ -28,7 +28,7 @@ namespace SuperShop
             services.AddTransient<SeedDb>(); // Cria o SeedDb, quando perguntam por ele
 
             services.AddControllersWithViews();
-            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
