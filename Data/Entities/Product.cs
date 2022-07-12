@@ -32,5 +32,17 @@ namespace SuperShop.Data.Entities
         public double Stock { get; set; }
 
         public User User { get; set; } // User pode ter muitos produtos - faz a ligação na base de dados
+
+        public string ImageFullPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ImageUrl))
+                {
+                    return null;
+                }
+                return $"https://localhost:44327{ImageUrl.Substring(1)}";
+            }
+        }
     }
 }
