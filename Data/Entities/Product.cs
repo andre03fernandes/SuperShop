@@ -19,16 +19,20 @@ namespace SuperShop.Data.Entities
         [Display(Name = "Image")]
         public string ImageUrl { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [Display(Name = "Last Purchase")]
         public DateTime? LastPurchase { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [Display(Name = "Last Sale")]
         public DateTime? LastSale { get; set; }
 
         [Display(Name = "Is Available")]
         public bool IsAvailable { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)]
+        //[DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)]
         public double Stock { get; set; }
 
         public User User { get; set; } // User pode ter muitos produtos - faz a ligação na base de dados
