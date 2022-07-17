@@ -17,7 +17,7 @@ namespace SuperShop.Data.Entities
         public decimal Price { get; set; }
 
         [Display(Name = "Image")]
-        public string ImageUrl { get; set; }
+        public Guid ImageId { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
@@ -37,16 +37,8 @@ namespace SuperShop.Data.Entities
 
         public User User { get; set; } // User pode ter muitos produtos - faz a ligação na base de dados
 
-        public string ImageFullPath
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(ImageUrl))
-                {
-                    return null;
-                }
-                return $"https://localhost:44327{ImageUrl.Substring(1)}";
-            }
-        }
+        public string ImageFullPath => ImageId == Guid.Empty
+            ? $"https://localhost:44327/images/noimage.png"
+            : $"https://supershopc69.blob.core.windows.net/products/{ImageId}";
     }
 }
