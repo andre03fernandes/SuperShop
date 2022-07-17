@@ -37,6 +37,7 @@ namespace SuperShop.Data.Entities
 
         public User User { get; set; } // User pode ter muitos produtos - faz a ligação na base de dados
 
+        [Display(Name = "Image")]
         public string ImageFullPath => ImageId == Guid.Empty
             ? $"https://localhost:44327/images/noimage.png"
             : $"https://supershopc69.blob.core.windows.net/products/{ImageId}";
