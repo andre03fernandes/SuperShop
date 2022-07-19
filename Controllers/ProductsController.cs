@@ -29,7 +29,7 @@ namespace SuperShop.Controllers
         // GET: Products
         public IActionResult Index()
         {
-            return View(_productRepository.GetAll().OrderBy(p => p.Name)); // Assim cada entidade tem a possibilidade de ser ordenada de maneira diferente
+            return View(_productRepository.GetAllWithUsers()); // Assim cada entidade tem a possibilidade de ser ordenada de maneira diferente
         }
 
         // GET: Products/Details/5
