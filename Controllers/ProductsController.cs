@@ -1,16 +1,15 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SuperShop.Data;
-using SuperShop.Data.Entities;
 using SuperShop.Helpers;
 using SuperShop.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace SuperShop.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -50,6 +49,7 @@ namespace SuperShop.Controllers
         }
 
         // GET: Products/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -66,7 +66,7 @@ namespace SuperShop.Controllers
             {
                 Guid imageId = Guid.Empty;
 
-                if(model.ImageFile != null && model.ImageFile.Length > 0)
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
                     imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
                 }
@@ -82,6 +82,7 @@ namespace SuperShop.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -111,7 +112,7 @@ namespace SuperShop.Controllers
                 {
                     Guid imageId = Guid.Empty;
 
-                    if(model.ImageFile != null && model.ImageFile.Length > 0)
+                    if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
                         imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
                     }
