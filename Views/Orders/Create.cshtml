@@ -1,0 +1,58 @@
+﻿@model IEnumerable<SuperShop.Data.Entities.OrderDetailTemp>
+@{
+    ViewData["Title"] = "Create";
+}
+<br />
+<h1 style="font-family: 'Lucida Handwriting'; text-align: center">New Orders</h1><hr /> <br />
+
+<p class="create">
+	<a asp-action="AddProduct" class="btn btn-success"><i class="fa-solid fa-folder-plus"></i></a>
+	<a asp-action="ConfirmOrder" class="btn btn-primary" id="btnConfirm"><i class="fa-solid fa-circle-check"></i></a>
+</p><br />
+<table class="table">
+	<thead>
+    	<tr>
+        	<th>
+            	@Html.DisplayNameFor(model => model.Product.Name)
+        	</th>
+        	<th>
+            	@Html.DisplayNameFor(model => model.Price)
+        	</th>
+        	<th>
+            	@Html.DisplayNameFor(model => model.Quantity)
+        	</th>
+        	<th>
+            	@Html.DisplayNameFor(model => model.Value)
+        	</th>
+        	<th></th>
+    	</tr>
+	</thead>
+	<tbody>
+    	@foreach (var item in Model)
+    	{
+        	<tr>
+            	<td style="vertical-align: middle">
+                	@Html.DisplayFor(modelItem => item.Product.Name)
+            	</td>
+            	<td style="vertical-align: middle">
+                	@Html.DisplayFor(modelItem => item.Price)
+            	</td>
+            	<td style="vertical-align: middle">
+                	@Html.DisplayFor(modelItem => item.Quantity)
+            	</td>
+            	<td style="vertical-align: middle">
+                	@Html.DisplayFor(modelItem => item.Value)
+            	</td>
+            	<td style="vertical-align: middle" id="@item.Id">
+                	<a asp-action="Increase" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-plus"></i></a>
+                	<a asp-action="Decrease" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-minus"></i></a>
+                	<a asp-action="DeleteItem" asp-route-id="@item.Id" class="btn btn-danger" id="btnDeleteItem"></a>
+            	</td>
+        	</tr>
+    	}
+	</tbody>
+</table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

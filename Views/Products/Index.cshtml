@@ -4,12 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Lista de Produtos</h1>
+<br />
 
-<p>
-    <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New</a>
-</p>
-<table class="table">
+<h1 style="font-family: 'Lucida Handwriting'; text-align: center">Products</h1> <hr /> <br />
+<p class="create">
+    <a asp-action="Create"><i style="font-size: 35px" class="fa-solid fa-circle-plus"></i></a>
+</p> <br />
+<table class="table" style="border: 2px solid black">
     <thead>
         <tr>
             <th>
@@ -39,36 +40,37 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td style="vertical-align: middle">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td style="vertical-align: middle">
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
-            <td>
+            <td style="vertical-align: middle">
                     @if (!string.IsNullOrEmpty(item.ImageFullPath))
                     {
                         <img src="@Url.Content(item.ImageFullPath)" alt="Image" style="width:105px; height:100px;max-width:100%;max-height:auto" />
                     }
             </td>
-            <td>
+            <td style="vertical-align: middle">
                 @Html.DisplayFor(modelItem => item.LastPurchase)
             </td>
-            <td>
+            <td style="vertical-align: middle">
                 @Html.DisplayFor(modelItem => item.LastSale)
             </td>
-            <td>
+            <td style="vertical-align: middle">
                 @Html.DisplayFor(modelItem => item.IsAvailable)
             </td>
-            <td>
+            <td style="vertical-align: middle">
                 @Html.DisplayFor(modelItem => item.Stock)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-edit"></i> Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-book"></i> Details</a> 
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-delete-left"></i> Delete</a>
+            <td style="vertical-align: middle">
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-edit"></i></a> 
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-book"></i></a> 
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-delete-left"></i></a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<br /><br /><br /><br /><br />

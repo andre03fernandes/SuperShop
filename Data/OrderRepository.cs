@@ -1,13 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SuperShop.Data.Entities;
-using SuperShop.Helpers;
-using SuperShop.Models;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SuperShop.Data
+﻿namespace SuperShop.Data
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+    using SuperShop.Data.Entities;
+    using SuperShop.Helpers;
+
     public class OrderRepository : GenericRepository<Order>, IOrderRepository
     {
         private readonly DataContext _context;
@@ -41,6 +39,20 @@ namespace SuperShop.Data
                 .ThenInclude(p => p.Product)
                 .Where(o => o.User == user)
                 .OrderByDescending(o => o.OrderDate);
+        }
+
+        public async Task<IQueryable<OrderDetailTemp>> GetDetailTempsAsync(string userName)
+        {
+            var user = await _userHelper.GetUserByEmailAsync(userName);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return _context.OrderDetailsTemp
+                .Include(p => p.Product)
+                .Where(o => o.User == user)
+                .OrderBy(o => o.Product.Name);
         }
     }
 }

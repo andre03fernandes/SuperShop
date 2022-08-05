@@ -1,4 +1,3 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿let time = new Date();
+let year = time.getFullYear();
+document.getElementById("rights").innerHTML = " CINEL | UFCD 5417 - Programação para a WEB - servidor (server-side) | 25853";

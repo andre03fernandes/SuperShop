@@ -3,12 +3,12 @@
 @{
     ViewData["Title"] = "Index";
 }
+<br />
+<h1 style="font-family: 'Lucida Handwriting'; text-align: center">Orders</h1> <hr /> <br />
 
-<h1>Orders</h1>
-
-<p>
-	<a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
+<p class="create">
+    <a asp-action="Create"><i style="font-size: 35px" class="fa-solid fa-circle-plus"></i></a>
+</p> <br />
 <table class="table">
 	<thead>
     	<tr>
@@ -46,22 +46,22 @@
             	@Html.DisplayFor(modelItem => item.User.FullName)
         	</th>
         	}
-        	<td>
+        	<td style="vertical-align: middle">
             	@Html.DisplayFor(modelItem => item.OrderDate)
         	</td>
-        	<td>
+        	<td style="vertical-align: middle">
             	@Html.DisplayFor(modelItem => item.DeliveryDate)
         	</td>
-        	<td>
+        	<td style="vertical-align: middle">
             	#Lines @*@Html.DisplayFor(modelItem => item.Lines)*@
         	</td>
-        	<td>
+        	<td style="vertical-align: middle">
             	@Html.DisplayFor(modelItem => item.Quantity)
         	</td>
-        	<td>
+        	<td style="vertical-align: middle">
             	@Html.DisplayFor(modelItem => item.Value)
         	</td>
-        	<td>
+        	<td style="vertical-align: middle">
             	<a asp-action="Deliver" asp-route-id="@item.Id" class="btn btn-info" id="btnDeliver">Deliver</a>
 	            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete">Delete</a>
         	</td>
