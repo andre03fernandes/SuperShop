@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using SuperShop.Data.Entities;
-using SuperShop.Helpers;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SuperShop.Data
+﻿namespace SuperShop.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+    using SuperShop.Data.Entities;
+    using SuperShop.Helpers;
+
     public class SeedDb
     {
         private readonly DataContext _context;
@@ -23,13 +24,29 @@ namespace SuperShop.Data
 
         public async Task SeedAsync()
         {
-            await _context.Database.MigrateAsync(); // Criar a base de dados com as migrations, se já tiver criada segue
+            await _context.Database.MigrateAsync();
 
             await _userHelper.CheckRoleAsync("Admin");
             await _userHelper.CheckRoleAsync("Customer");
 
-            var user = await _userHelper.GetUserByEmailAsync("andre2411fernandes@gmail.com"); // Verifica se o user existe 
-            if(user == null)
+            if (!_context.Countries.Any())
+            {
+                var cities = new List<City>();
+                cities.Add(new City { Name = "Lisboa" });
+                cities.Add(new City { Name = "Porto" });
+                cities.Add(new City { Name = "Faro" });
+
+                _context.Countries.Add(new Country
+                {
+                    Cities = cities,
+                    Name = "Portugal"
+                });
+
+                await _context.SaveChangesAsync();
+            }
+
+            var user = await _userHelper.GetUserByEmailAsync("andre2411fernandes@gmail.com");
+            if (user == null)
             {
                 user = new User
                 {
@@ -37,16 +54,21 @@ namespace SuperShop.Data
                     LastName = "Fernandes",
                     Email = "andre2411fernandes@gmail.com",
                     UserName = "andre2411fernandes@gmail.com",
-                    PhoneNumber = "214356676"
+                    PhoneNumber = "212343555",
+                    Address = "Rua Xpto 14",
+                    CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault()
                 };
 
                 var result = await _userHelper.AddUserAsync(user, "123456");
-                if(result != IdentityResult.Success)
+                if (result != IdentityResult.Success)
                 {
                     throw new InvalidOperationException("Could not create the user in seeder");
                 }
 
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
+                //var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                //await _userHelper.ConfirmEmailAsync(user, token);
             }
 
             var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
@@ -57,10 +79,10 @@ namespace SuperShop.Data
 
             if (!_context.Products.Any())
             {
-                AddProduct("IPhone X", user);
+                AddProduct("iPhone X", user);
                 AddProduct("Magic Mouse", user);
-                AddProduct("IWatch Series 4", user);
-                AddProduct("IPad Mini", user);
+                AddProduct("iWatch Series 4", user);
+                AddProduct("iPad Mini", user);
                 await _context.SaveChangesAsync();
             }
         }
