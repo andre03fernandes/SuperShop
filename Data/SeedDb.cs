@@ -79,10 +79,11 @@
 
             if (!_context.Products.Any())
             {
-                AddProduct("iPhone X", user);
+                AddProduct("IPhone X", user);
                 AddProduct("Magic Mouse", user);
-                AddProduct("iWatch Series 4", user);
-                AddProduct("iPad Mini", user);
+                AddProduct("Apple Watch Series 4", user);
+                AddProduct("IPad Mini", user);
+                AddProduct("Apple HomePod", user);
                 await _context.SaveChangesAsync();
             }
         }
