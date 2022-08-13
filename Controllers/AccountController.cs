@@ -1,23 +1,31 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using SuperShop.Data;
-using SuperShop.Data.Entities;
-using SuperShop.Helpers;
-using SuperShop.Models;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SuperShop.Controllers
+﻿namespace SuperShop.Controllers
 {
+    using System.IdentityModel.Tokens.Jwt;
+    using System;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.IdentityModel.Tokens;
+    using SuperShop.Data;
+    using SuperShop.Data.Entities;
+    using SuperShop.Helpers;
+    using SuperShop.Models;
+
     public class AccountController : Controller
     {
         private readonly IUserHelper _userHelper;
         private readonly ICountryRepository _countryRepository;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(IUserHelper userHelper, ICountryRepository countryRepository)
+        public AccountController(IUserHelper userHelper, ICountryRepository countryRepository, IConfiguration configuration)
         {
             _userHelper = userHelper;
             _countryRepository = countryRepository;
+            _configuration = configuration;
         }
 
         public IActionResult Login()
@@ -205,6 +213,47 @@ namespace SuperShop.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpPost] // Sempre post, não tem sentido fazer através do get
+        public async Task<IActionResult> CreateToken([FromBody] LoginViewModel model) // Recebe um modelo através do body (facultativo)
+        {
+            if (this.ModelState.IsValid) // se o modelo for válido
+            {
+                var user = await _userHelper.GetUserByEmailAsync(model.Username); // verificar se o email existe
+                if (user != null) // se o email exisitir, verificamos a password (validação)
+                {
+                    var result = await _userHelper.ValidatePasswordAsync(
+                        user,
+                        model.Password);
+
+                    if (result.Succeeded) // se a password for válida,criamos os claims
+                    {
+                        var claims = new[] // claims - onde estão as permissões, para criar os tokens, mecanismo que o middleware tem para criar os tokens
+                        {
+                            new Claim(JwtRegisteredClaimNames.Sub, user.Email), // ao criar o token, ele cria uma zona em que vai registar o email do utilizador
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // e cria uma zona com um guid aleatório que fica associado ao email do utilizador criado antes
+                        }; // mecanismo do middleware, conseguindo saber todo o processo da criação
+
+                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"])); // busca a key que está no "appsettings.json" do projeto e converte para bytes, ou seja, 0 e 1
+                        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256); // gera credenciais e agarra na key e gera o token, usando o algoritmo "HmacSha256"
+                        var token = new JwtSecurityToken( // Jwt - um tipo de token
+                            _configuration["Tokens:Issuer"], // issuer, audience, claims - parametros de configuração
+                            _configuration["Tokens:Audience"],
+                            claims,
+                            expires: DateTime.UtcNow.AddDays(15), // quando expira o token - neste caso o token é válido por 15 dias
+                            signingCredentials: credentials);
+                        var results = new // objeto anonimo
+                        {
+                            token = new JwtSecurityTokenHandler().WriteToken(token), // escreve o token criado anteriormente
+                            expiration = token.ValidTo
+                        };
+                        return this.Created(string.Empty, results); // depois de criado manda um parametro vazio
+                    }
+                }
+            }
+
+            return BadRequest(); // se correr mal, manda um bad request
         }
 
         public IActionResult NotAuthorized()
