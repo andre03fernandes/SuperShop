@@ -67,8 +67,8 @@
                 }
 
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
-                //var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
-                //await _userHelper.ConfirmEmailAsync(user, token);
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                await _userHelper.ConfirmEmailAsync(user, token);
             }
 
             var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
