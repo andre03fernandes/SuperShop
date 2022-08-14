@@ -17,6 +17,7 @@ namespace SuperShop
     using SuperShop.Data;
     using SuperShop.Data.Entities;
     using SuperShop.Helpers;
+    using Vereyon.Web;
 
     public class Startup
     {
@@ -64,6 +65,8 @@ namespace SuperShop
             {
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddFlashMessage();
 
             services.AddTransient<SeedDb>(); // Cria o SeedDb, quando perguntam por ele
             services.AddScoped<IUserHelper, UserHelper>();
