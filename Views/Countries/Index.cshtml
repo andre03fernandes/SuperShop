@@ -3,12 +3,15 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h2>Countries</h2>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+<br />
+<h1 style="font-family: 'Lucida Handwriting'; text-align: center">Countries</h1>
+<hr />
+<br />
+<p class="create">
+    <a asp-action="Create"><i style="font-size: 35px" class="fa-solid fa-circle-plus"></i></a>
 </p>
+<br />
+
 <table class="table">
     <thead>
         <tr>
@@ -32,9 +35,9 @@
                     @Html.DisplayFor(modelItem => item.NumberCities)
                 </td>
                 <td id="@item.Id">
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="far fa-edit"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>
         }
@@ -60,7 +63,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
     <script type="text/javascript">
         $(document).ready(function () {
